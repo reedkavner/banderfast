@@ -1,0 +1,114 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Banderfast</title>
+    <meta name="description" content="All the decision points in Black Mirror's 'Bandersnatch'.">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+<style type="text/css">
+body{
+  background: black;
+  color: white;
+  font-family: Arial, Helvetica, sans-serif;
+  font-
+}
+
+a, a:visited, a:hover{
+  color: white;
+}
+
+#main{
+  max-width: 470px;
+  margin-left: auto;
+  margin-right: auto;
+}  
+
+#moments{
+  margin-top: 50px;
+}
+
+.moment{
+  margin-bottom: 40px;
+}
+
+.moment img{
+  width: 100%;
+  margin-top: 10px;
+  margin-bottom: -4px;
+}
+
+.description{
+  text-transform: uppercase;
+  width: 100%;
+  text-align: center;
+  font-size: 120%;
+}
+
+.choices{
+  width: 100%;
+  display: table;
+}
+
+.choice{
+  display: table-cell;
+  width: 49%;
+  text-align: center;
+  border: 1px white solid;
+  height: 50px;
+  vertical-align: middle;
+
+}
+
+</style>
+
+</head>
+
+<body>
+    <div id="main">
+      <h1>Banderfast</h1>
+      <div id="intro">All the decision points in Black Mirror's "Bandersnatch". By <a href="https://www.twitter.com/reedkavner">@reedkavner</a>. View the original Netflix JSON data <a href="https://github.com/reedkavner/banderfast/blob/master/bandersnatch.json">here</a>.</div>
+
+        <div id="moments">
+          <script id="template-moment" type="text/x-handlebars-template">
+          {{#each moment}}
+            <div class="moment">
+              <div class="description">{{description}}</div>
+              <img src="images/{{localjpg image}}">
+              <div class="choices">
+                {{#each choices}}
+                  <div class="choice">{{text}}</div>
+                {{/each}}
+              </div>
+            </div>
+          {{/each}}
+          </script>
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+    window.jQuery || document.write('<script src="js/vendor/jquery-3.3.1.min.js"><\/script>')
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.12/handlebars.min.js"></script>
+    <script type="text/javascript">
+    var source = $("#template-moment").html();
+    var template = Handlebars.compile(source);
+
+    Handlebars.registerHelper("localjpg", function(imgUrl) {
+      var filename = imgUrl.split("/2018125/")[1];
+      var jpg = filename.split(".")[0] + '.jpg';
+      return jpg;
+    });
+
+
+    $.getJSON('banderfast.json',
+        function(data) {
+            var context = { moment: data };
+            var momentsHTML = template(context);
+            $("#moments").append(momentsHTML);
+        }
+    );
+    </script>
+
+</html>
